@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create</title>
+</head>
+<body>
+    <h1>Upload file program for {{dd}}</h1>
+   <h3>Upload a the file to database</h3>
+   <form action="/upload" id="d_form" method="POST" enctype="multipart/form-data">
+       <input type="hidden" name="person_name" value="{{ dd }}">
+       Caption:<input type="text" name="caption" ><br>
+       Picture:<input type="file" name="file" multiple accept="image/*"><br>
+      <input type="submit" name="upload" value="Upload">
+   </form>
+</body>
+</html>

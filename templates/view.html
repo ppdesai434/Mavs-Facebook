@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View pictures</title>
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+    <script type="text/javascript">
+            $(document).ready(function () {
+                var rating=0;
+                $(".rateYo").each(function(){
+                    $(this).rateYo({
+                        rating: $(this).attr("value"),
+                        fullStar: true
+                        });
+                });
+
+                $(".rateYo").rateYo("option", "onSet", function () {
+                    c=$(this).rateYo("rating");
+                    givenid = $(this).attr("givenid");
+                alert("Rating is "+c);
+
+                $.ajax({
+                      url: "/rating",
+                    data: {
+                          rating : c,
+                          id: givenid
+                      }
+                }).done(function(data) {
+                    location.reload();
+                    //rating = data.rating;
+                    //$(this).closest(".count").innerHTML(data.count);
+                    //alert(data.rating + data.count);
+                });
+
+
+                });
+
+
+
+            });
+
+
+
+    </script>
+</head>
+<body>
+    <h1>Viewing pictures for {{dd}}</h1>
+    {% if data != none %}
+    {%  for row in data%}
+            <h4>{{ row[2] }}</h4>
+            <img id={{row[0]}} name={{ row[1] }} src="data:image/jpg;base64, {{ row[3] }}">
+            <div class="count">({{ row[6] }})</div><div class="rateYo" value="{{ (row[5]/row[6])|round|int }}" givenid="{{ row[0] }}"></div>
+            <h4>Time:</h4>{{ row[4] }}
+    {%  endfor%}
+    {% endif %}
+   <!--<h3>Upload a the file to database</h3>
+   <form action="/upload" id="d_form" method="POST" enctype="multipart/form-data">
+       <input type="hidden" name="person_name" value="{{ dd }}">
+       Caption:<input type="text" name="caption" ><br>
+       Picture:<input type="file" name="file" multiple accept="image/*"><br>
+      <input type="submit" name="upload" value="Upload">
+   </form>-->
+</body>
+</html>
